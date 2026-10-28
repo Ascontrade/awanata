@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Awanata</title>
+<meta name="description" content="Keuangan keluarga Awanata">
+<meta name="theme-color" content="#16352B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Awanata">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="referrer" content="no-referrer">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root{--forest:#16352B;--paper:#F3F7F4;--mint:#7FC4A0;--bg:#F3F5F2;--ink:#17201C;--mut:#56645C}
+  @media (prefers-color-scheme: dark){:root{--bg:#0F1613;--ink:#E6EEE9;--mut:#A3B2A9}}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,'Segoe UI',sans-serif;overflow:hidden}
+  #app{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--bg);padding-top:env(safe-area-inset-top,0px);box-sizing:border-box}
+  #splash{position:fixed;inset:0;z-index:2;background:var(--forest);color:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .25s}
+  #splash img{width:84px;height:84px;border-radius:22px}
+  #splash b{font-size:26px;letter-spacing:-.02em}
+  #splash span{font-size:14px;opacity:.75}
+  #splash.gone{opacity:0;pointer-events:none}
+  #msg{display:none;flex-direction:column;align-items:center;gap:12px;max-width:300px;text-align:center}
+  #msg a,#msg button{color:var(--forest);background:var(--paper);border:0;border-radius:12px;padding:11px 16px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+  @media (prefers-reduced-motion: reduce){#splash{transition:none}}
+</style>
+</head>
+<body>
+<div id="splash" role="status" aria-live="polite">
+  <img src="icon-192.png" alt="">
+  <b>Awanata</b>
+  <span id="state">Memuat…</span>
+  <div id="msg">
+    <span id="msgtext"></span>
+    <button type="button" id="retry">Coba lagi</button>
+    <a id="direct" target="_blank" rel="noopener">Buka di browser</a>
+  </div>
+</div>
+<iframe id="app" title="Awanata" allow="camera; clipboard-write" referrerpolicy="no-referrer"></iframe>
+<script>
+  // Alamat web app Apps Script (Deploy → Manage deployments). URL tetap sama saat versi baru di-deploy.
+  var APP_URL = 'https://script.google.com/macros/s/AKfycbxHJoJtQzWvIrVZGORdInx8F5GAOXx244BdLQ7EUi4d0Y90Fw3fU9FefyXHJj76ywinmg/exec';
+  var frame = document.getElementById('app'), splash = document.getElementById('splash'), state = document.getElementById('state');
+  var msg = document.getElementById('msg'), msgtext = document.getElementById('msgtext');
+  document.getElementById('direct').href = APP_URL;
+  var timer;
+  function show(text) { state.style.display = 'none'; msgtext.textContent = text; msg.style.display = 'flex'; splash.classList.remove('gone'); }
+  function load() {
+    msg.style.display = 'none'; state.style.display = ''; state.textContent = 'Memuat…';
+    if (!navigator.onLine) { show('Tidak ada koneksi internet. Awanata perlu internet karena data disimpan aman di server, bukan di HP.'); return; }
+    clearTimeout(timer);
+    timer = setTimeout(function () { state.textContent = 'Koneksi lambat, masih memuat…'; }, 8000);
+    frame.onload = function () { clearTimeout(timer); setTimeout(function () { splash.classList.add('gone'); }, 350); };
+    frame.src = APP_URL;
+  }
+  document.getElementById('retry').onclick = load;
+  window.addEventListener('online', function () { if (msg.style.display === 'flex') load(); });
+  load();
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () { });
+</script>
+</body>
+</html>

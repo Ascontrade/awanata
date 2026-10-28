@@ -1,0 +1,17 @@
+{
+  "name": "Awanata · Keuangan Keluarga",
+  "short_name": "Awanata",
+  "description": "Keuangan pribadi yang terjaga. Dana bersama yang tertib.",
+  "lang": "id",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#16352B",
+  "theme_color": "#16352B",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
