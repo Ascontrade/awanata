@@ -1,7 +1,7 @@
 // Service worker cangkang Awanata: hanya menyimpan berkas cangkang (ikon, halaman pembuka) agar aplikasi bisa dipasang.
 // Data keuangan TIDAK pernah disimpan di HP — semua permintaan ke Google Apps Script langsung ke jaringan.
-var CACHE = 'awanata-shell-v1';
-var FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'maskable-512.png', 'apple-touch-icon.png', 'favicon-32.png'];
+var CACHE = 'awanata-shell-v2';
+var FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'maskable-512.png', 'apple-touch-icon.png', 'favicon-32.png', 'logo-white.png'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); }).then(function () { return self.skipWaiting(); }));
